@@ -1,27 +1,29 @@
 package scenarios;
 
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import org.testng.annotations.Test;
+import pageObjects.WebPageObject;
+import service.PropertyReader;
 import setup.BaseTest;
+
+import java.util.List;
 
 public class webMobileTests extends BaseTest {
 
-    @Test(groups = {"web"}, description = "Make sure that we've opened IANA homepage")
-    public void simpleWebTest() throws InterruptedException {
-        getDriver().get("http://iana.org"); // open IANA homepage
+    public static final String GOOGLE_URL = PropertyReader.URL();
+    public static final String EPAM_REQUEST = PropertyReader.searchRequest();
+    WebPageObject webPageObject;
 
-        // Make sure that page has been loaded completely
-        new WebDriverWait(getDriver(), 10).until(
-                wd -> ((JavascriptExecutor) wd).executeScript("return document.readyState").equals("complete")
-        );
+    @Test(groups = {"web"}, description = "Make sure that there are some relevant results after searching by keyword 'EPAM'")
+    public void epamSearchTest() throws InterruptedException {
 
-        // Check IANA homepage title
-        assert ((WebDriver) getDriver()).getTitle().equals("Internet Assigned Numbers Authority") : "This is not IANA homepage";
+        webPageObject = (WebPageObject) getPo().getPageObject();
+        webPageObject.navigateToURL(GOOGLE_URL);
+        webPageObject.enterRequestAndClickSearch(EPAM_REQUEST);
+        List<String> results = webPageObject.getSearchResultsTextList();
+        Assert.assertTrue(results.stream().anyMatch(result -> result.contains(EPAM_REQUEST)));
 
-        // Log that test finished
-        System.out.println("Site opening done");
+        System.out.println("epamSearchTest done");
     }
 
 }

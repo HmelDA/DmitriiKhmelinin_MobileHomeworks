@@ -1,27 +1,27 @@
 package service;
 
 import entities.User;
+import util.RandomStringGenerator;
 
 public class UserCreator {
 
-    public static final String USER_E_MAIL = PropertyReader.userEMail();
-    public static final String USER_LOGIN = PropertyReader.userName();
-    public static final String USER_PASSWORD = PropertyReader.userPassword();
+    public static final String RANDOM_USER_E_MAIL = RandomStringGenerator.generateString() + PropertyReader.epamDomain();
+    public static final String RANDOM_USER_LOGIN = RandomStringGenerator.generateString();
+    public static final String RANDOM_USER_PASSWORD = RandomStringGenerator.generateString();
 
-
-    public static User withCredentialsFromProperty() {
-        return new User( USER_E_MAIL, USER_LOGIN, USER_PASSWORD);
+    public static User createNewRandomUser() {
+        return new User(RANDOM_USER_E_MAIL, RANDOM_USER_LOGIN, RANDOM_USER_PASSWORD);
     }
 
-    public static User withEmptyLogin() {
-        return new User(USER_E_MAIL, "", USER_PASSWORD);
+    public static User createNewUserWithEmptyMail() {
+        return new User("", RANDOM_USER_LOGIN, RANDOM_USER_PASSWORD);
     }
 
-    public static User withEmptyPassword() {
-        return new User(USER_E_MAIL, USER_LOGIN, "");
+    public static User createNewUserWithEmptyLogin() {
+        return new User(RANDOM_USER_E_MAIL, "", RANDOM_USER_PASSWORD);
     }
 
-    public static User withEmptyMail() {
-        return new User("", USER_LOGIN, USER_PASSWORD);
+    public static User createNewUserWithEmptyPassword() {
+        return new User(RANDOM_USER_E_MAIL, RANDOM_USER_LOGIN, "");
     }
 }
